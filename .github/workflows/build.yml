@@ -12,7 +12,6 @@ image: devkitpro/devkitarm:latest
 steps:
 - name: Checkout
 uses: actions/checkout@v4
-
 - name: Build
 run: |
 which arm-none-eabi-g++ || ls
