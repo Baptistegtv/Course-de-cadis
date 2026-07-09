@@ -1,0 +1,33 @@
+name: Build 3DS .3dsx
+
+# Builds the homebrew on GitHub's servers (free). No PC needed.
+# Trigger: push to main, or run manually from the Actions tab.
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: devkitpro/devkitarm:latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install 3DS packages
+        run: |
+          pacman -Sy --noconfirm
+          pacman -S --noconfirm 3ds-dev
+
+      - name: Build
+        run: make
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: cartchaos-3dsx
+          path: |
+            build/cartchaos.3dsx
+            build/cartchaos.smdh
